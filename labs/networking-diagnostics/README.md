@@ -1,3 +1,5 @@
+This document is a record of my mental models before starting the networking labs
+
 ## Scenario A — Ethernet, ARP and same-subnet forwarding
 
 /24 means the 1st 24 bits identify the network, the remaining 8 identify the host
