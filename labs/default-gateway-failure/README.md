@@ -12,9 +12,9 @@ All hosts have been configured with ip addresses
 ## Prediction
 
 
-When Host A pings 10.10.20.20 what happens id default gateway is missing:
+### When Host A pings 10.10.20.20 what happens if default gateway is missing:
 
- the initial arp request will fail, as there is no default gateway to send the L2 frame.
+the initial arp request will fail, as there is no default gateway to send the L2 frame.
 
 1. Host A determines that 10.10.20.20 by looking at the network portion of the address; both subnets are using /24. 
 
@@ -24,7 +24,7 @@ When Host A pings 10.10.20.20 what happens id default gateway is missing:
 
 4. No frame is sent SW1
 
-When Host A pings 10.10.20.20 what happens if default gateway is incorrect:
+### When Host A pings 10.10.20.20 what happens if default gateway is incorrect:
 
 5. ARP request would be sent only throughout Host A's local Layer-2 broadcast domain/VLAN, the default gateway will not reply to the ARP request if the IP is different to the one configured.
 
@@ -41,7 +41,7 @@ To get to `10.10.20.20` the next hop is > `10.10.10.254`
 
 Observable evidence:
 
-- no default gateway: packets are dropped, no packets are traversing the network from Host A
+- no default gateway: packets are not forwarded, no packets are traversing the network from Host A
 
 
 #### Missing default gateway
@@ -54,5 +54,14 @@ Observable evidence:
 - incorrect default gateway: ARP request sent but no reply
 
 
+## Mental Model
 
+### no default route
 
+ip destination `10.10.20.20`, Host A determines destination is remote by doing a route look up, no next hop is defined, next hop cannot occur, ARP request is not sent. Failure occurs at route lookup.
+
+### default route points to nonexistent 10.10.10.254
+
+ip destination `10.10.20.20`, ost A determines destination is remote by doing a route look up, next hop is defined to be 10.10.10.254, ARP request is sent throughout Host A's local Layer-2 broadcast domain/VLAN, no device replies to ARP request, L2 frame cannot be constructed.
+
+Failure occurs when no device replies to the ARP request.
