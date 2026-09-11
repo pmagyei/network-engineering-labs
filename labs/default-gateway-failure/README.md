@@ -109,3 +109,18 @@ I also noticed that during the ICMP transmission, both hosts performed ARP neigh
 
 ![](./evidence/host-b-icmp-arp.png)
 
+### Incorrect default route
+
+
+### remote/non-local
+
+The packet capture observation shows that the ARP leaves Host A, and is flooded within Host A’s local Layer-2 broadcast domain; with an incorrect default gateway configured, Host A arp's for an IP address that does not belong to any network device.
+
+![](./evidence/incorrect-default-gateway-packet-capture.png)
+
+
+#### Restoration
+
+I restored Host A's default route, attempted the ping/ICMP request. Host A ARP request asked for `10.10.10.128` which belonged to R1, R1 replies, R1 subsequently ARP's for Host B's IP `10.10.20.20`, once all the ARP requests and replies have resolved, ICMP requests follow successfully.
+
+![](./evidence/restored-incorrect-default-route-packet-capture.png)
